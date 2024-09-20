@@ -2363,16 +2363,17 @@ Or, if your validation rule requires access to the validator instance performing
 <a name="using-closures"></a>
 ### Using Closures
 
-If you only need the functionality of a custom rule once throughout your application, you may use a closure instead of a rule object. The closure receives the attribute's name, the attribute's value, and a `$fail` callback that should be called if validation fails:
+If you only need the functionality of a custom rule once throughout your application, you may use a closure instead of a rule object. The closure receives the attribute's name, the attribute's value, a `$fail` callback, and a `$validator` instance that should be called if validation fails:
 
     use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Validator as ValidationValidator;
     use Closure;
 
     $validator = Validator::make($request->all(), [
         'title' => [
             'required',
             'max:255',
-            function (string $attribute, mixed $value, Closure $fail) {
+            function (string $attribute, mixed $value, Closure $fail, ValidationValidator $validator) {
                 if ($value === 'foo') {
                     $fail("The {$attribute} is invalid.");
                 }
